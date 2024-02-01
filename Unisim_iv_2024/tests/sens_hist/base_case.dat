@@ -9,18 +9,22 @@ TITLE1
 
 XDR ON
 INUNIT  SI
+
 WPRN    WELL   TIME
 WPRN    GRID   0
 WPRN    ITER   NONE
 OUTPRN  WELL   BRIEF
 OUTPRN  RES    NONE
 OUTPRN  GRID   NONE
-WSRF    GRID   0
+
+WSRF    GRID   TNEXT
 WSRF    WELL   TIME
-OUTSRF  GRID   NONE
-**OUTSRF  SPECIAL  PAVG
+WSRF    SPECIAL  TIME
+OUTSRF  GRID   SO SG SW PRES VISO VISG VISW Z 'CO2' **NONE
 OUTSRF  WELL   LAYER  NONE
-OUTSRF  RES    NONE
+OUTSRF  RES    ALL **NONE
+OUTSRF  SPECIAL  SIMPERF
+
 WRST 0
 
 
@@ -118,8 +122,5 @@ DATE 2018 9 2
 INCLUDE '../wells/Wells_base_case.well'
 INCLUDE '../wells/ICV_definition.inc'
 INCLUDE '../hist/Schedule_history_2024.hist'
-
-INCLUDE '../sch/Well_plat_redefinition.sch'
-INCLUDE '../sch/SA_008.inc'
-** DATE 2024 8 3
-STOP
+** INCLUDE '../sch/Well_plat_redefinition.sch'
+** INCLUDE '../sch/SA_008.inc'
