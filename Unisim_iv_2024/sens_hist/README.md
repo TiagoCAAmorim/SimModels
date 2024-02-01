@@ -13,3 +13,4 @@ Original history file is quite difficult to read, a few changes were proposed:
         * This addition reduced the runtime to the same level as the other.
 * Reserved additional TIMEs removal (mod3).
     * Since simulation time is the same and the plots are worse when the additional TIMEs are removed, this modification was reversed.
+    * **Decided** to continue with the mod3a version (changes TIME to DATE + group TARGET + DTWELL 0.01)
