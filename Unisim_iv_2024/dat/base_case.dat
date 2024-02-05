@@ -142,6 +142,11 @@ OPEN 'P11' 'P13' 'P14' 'P15' 'P16'
 OPEN 'I12' 'I14' 'I15'
 OPEN 'I11-W' 'I13-W' 'I17-W'
 
+** INCLUDE '../sch/trigger/ICV_prod.sch'
+** INCLUDE '../sch/trigger/ICV_prod_2nd_phase.sch'
+** INCLUDE '../sch/trigger/ICV_inj.sch'
+** INCLUDE '../sch/trigger/ICV_inj_2nd_phase.sch'
+
 INCLUDE '../sch/Base_case.sch'
 
 STOP
