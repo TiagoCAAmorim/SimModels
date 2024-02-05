@@ -122,7 +122,6 @@ BHPDEPTH '*' 5400.
 SHUTIN '*'
 
 INCLUDE '../hist/Schedule_history_2024.hist'
-** DATE 2024 8 3
 
 INCLUDE '../wells/Wells_base_case_2nd_phase.well'
 INCLUDE '../wells/ICV_definition_2nd_phase.inc'
