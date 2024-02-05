@@ -30,22 +30,22 @@ WRST 0
 
 GRID CORNER 47 39 291
 
-INCLUDE '../grid/CORNERS.grid'
+INCLUDE '../../grid/CORNERS.grid'
 
-INCLUDE '../grid/2024/PERMI.geo'
-INCLUDE '../grid/2024/PERMJ.geo'
-INCLUDE '../grid/2024/PERMK.geo'
-INCLUDE '../grid/2024/POR.geo'
+INCLUDE '../../grid/2024/PERMI.geo'
+INCLUDE '../../grid/2024/PERMJ.geo'
+INCLUDE '../../grid/2024/PERMK.geo'
+INCLUDE '../../grid/2024/POR.geo'
 
 TRANSF 'Fault 4'    2.8500468556E-07
-INCLUDE '../grid/Fault_4.flt'
+INCLUDE '../../grid/Fault_4.flt'
 TRANSF 'Fault 5'    6.5555303137E-01
-INCLUDE '../grid/Fault_5.flt'
+INCLUDE '../../grid/Fault_5.flt'
 TRANSF 'Fault 6'    2.5510647240E-02
-INCLUDE '../grid/Fault_6.flt'
+INCLUDE '../../grid/Fault_6.flt'
 
-INCLUDE '../grid/PINCH.geo'
-INCLUDE '../grid/null_array.geo'
+INCLUDE '../../grid/PINCH.geo'
+INCLUDE '../../grid/null_array.geo'
 
 CPOR 5.0001E-07
 PRPOR 50000
@@ -53,7 +53,7 @@ PRPOR 50000
 PVCUTOFF 2000
 
 
-INCLUDE '../pvt/EOS_1.pvt'
+INCLUDE '../../pvt/EOS_1.pvt'
 
 REFPW   62000
 CW      5E-07
@@ -64,10 +64,10 @@ DENWS   1000
 
 ROCKFLUID
 
-INCLUDE '../grid/2024/RTYPE.geo'
-INCLUDE '../kr/KR_est_1.kr'
-INCLUDE '../kr/KR_coq_1.kr'
-INCLUDE '../kr/KR_Karsts.kr'
+INCLUDE '../../grid/2024/RTYPE.geo'
+INCLUDE '../../kr/KR_est_1.kr'
+INCLUDE '../../kr/KR_coq_1.kr'
+INCLUDE '../../kr/KR_Karsts.kr'
 
 
 INITIAL
@@ -119,21 +119,21 @@ AIM THRESH 0.25
 RUN
 DATE 2018 9 2
 
-INCLUDE '../wells/Wells_base_case.well'
-INCLUDE '../wells/ICV_definition.inc'
-INCLUDE '../hist/Groups.inc'
+INCLUDE '../../wells/Wells_base_case.well'
+INCLUDE '../../wells/ICV_definition.inc'
+INCLUDE '../../hist/Groups.inc'
 BHPDEPTH '*' 5400.
 SHUTIN '*'
 
-INCLUDE '../hist/Schedule_history_2024.hist'
+INCLUDE '../../hist/Schedule_history_2024.hist'
 
-INCLUDE '../wells/Wells_base_case_2nd_phase.well'
-INCLUDE '../wells/ICV_definition_2nd_phase.inc'
+INCLUDE '../../wells/Wells_base_case_2nd_phase.well'
+INCLUDE '../../wells/ICV_definition_2nd_phase.inc'
 
-INCLUDE '../sch/Groups.inc'
-INCLUDE '../sch/Wells.sch'
-INCLUDE '../sch/Wells_2nd_phase.sch'
-INCLUDE '../sch/Plat1.sch'
+INCLUDE '../../sch/Groups.inc'
+INCLUDE '../../sch/Wells.sch'
+INCLUDE '../../sch/Wells_2nd_phase.sch'
+INCLUDE '../../sch/Plat1.sch'
 
 ON-TIME 'P*'
 0.92
@@ -145,11 +145,11 @@ OPEN 'P11' 'P13' 'P14' 'P15' 'P16'
 OPEN 'I12' 'I14' 'I15'
 OPEN 'I11-W' 'I13-W' 'I17-W'
 
-** INCLUDE '../sch/trigger/ICV_prod.sch'
-** INCLUDE '../sch/trigger/ICV_prod_2nd_phase.sch'
-** INCLUDE '../sch/trigger/ICV_inj.sch'
-** INCLUDE '../sch/trigger/ICV_inj_2nd_phase.sch'
+** INCLUDE '../../sch/trigger/ICV_prod.sch'
+** INCLUDE '../../sch/trigger/ICV_prod_2nd_phase.sch'
+** INCLUDE '../../sch/trigger/ICV_inj.sch'
+** INCLUDE '../../sch/trigger/ICV_inj_2nd_phase.sch'
 
-INCLUDE '../sch/2024/Base_case.sch'
+INCLUDE '../../sch/2024/Base_case.sch'
 
 STOP
