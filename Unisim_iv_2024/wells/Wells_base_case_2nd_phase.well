@@ -1,12 +1,11 @@
-**	POCOS PRODUTORES - SEGUNDA ONDA - G3	          	  **			
-											
-WELL	'P17'	ATTACHTO	'P-PLAT1'								
+**	POCOS PRODUTORES - SEGUNDA ONDA - G3
+WELL	'P17'
 CYCLPROD 'P17'
-OPERATE  MIN  BHP  10000.0  CONT REPEAT    **condi��es somente da assimila��o, para as condi��es de previs�o olhar o include de redefinicao das condicoes
+OPERATE  MIN  BHP  10000.0  CONT REPEAT    
 OPERATE  MAX  STL  8000.0  CONT REPEAT
 GEOMETRY  K  0.0762  0.37  1.0  0.0
       PERF      GEOA  'P17'
-** UBA                 ff          Status  Connection  
+** UBA                 ff          Status  Connection
     19 16 44          1 OPEN    FLOW-TO  'SURFACE'  REFLAYER
     19 16 45          1 OPEN    FLOW-TO  1
     19 16 46          1 OPEN    FLOW-TO  2
@@ -123,15 +122,14 @@ LAYERXYZ  'P17'
     19 16 225  782916.932000  7278578.919000  5632.826248  782916.563100  7278579.138000  5637.826305  5.018397
     19 16 226  782916.563100  7278579.138000  5637.826305  782916.194200  7278579.356000  5642.826298  5.018332
     19 16 227  782916.194200  7278579.356000  5642.826298  782916.009700  7278579.465000  5645.326294  2.509166
-*SHUTIN	'P17'										
-											
-WELL	'P18'	ATTACHTO	'P-PLAT1'								
+
+WELL	'P18'
 CYCLPROD 'P18'
-OPERATE  MIN  BHP  10000.0  CONT REPEAT    **condi��es somente da assimila��o, para as condi��es de previs�o olhar o include de redefinicao das condicoes
+OPERATE  MIN  BHP  10000.0  CONT REPEAT    
 OPERATE  MAX  STL  8000.0  CONT REPEAT
 GEOMETRY  K  0.0762  0.37  1.0  0.0
       PERF      GEOA  'P18'
-** UBA                 ff          Status  Connection  
+** UBA                 ff          Status  Connection
     30 19 46          1 OPEN    FLOW-TO  'SURFACE'  REFLAYER
     30 19 47          1 OPEN    FLOW-TO  1
     30 19 48          1 OPEN    FLOW-TO  2
@@ -276,22 +274,20 @@ LAYERXYZ  'P18'
     30 19 256  780647.085200  7278257.958000  5624.680226  780645.089400  7278258.400000  5629.680205  5.401707
     30 19 257  780645.089400  7278258.400000  5629.680205  780643.093600  7278258.842000  5634.680185  5.401708
     30 19 258  780643.093600  7278258.842000  5634.680185  780642.095700  7278259.063000  5637.180176  2.700854
-*SHUTIN	'P18'										
-											
+
 
 **	POCOS INJETORES	- GAS - SEGUNDA	ONDA - G3
-											
-WELL	'I18'	ATTACHTO	'I-PLAT1'								
+WELL	'I18'
 INJECTOR 'I18'
 INCOMP  CYCLING
-OPERATE  MAX  BHP  100000.0  CONT REPEAT    **condi��es somente da assimila��o, para as condi��es de previs�o olhar o include de redefinicao das condicoes
+OPERATE  MAX  BHP  100000.0  CONT REPEAT    
 OPERATE  MAX  STG  4000000.0  CONT REPEAT
-**	UBA	ff	Status	Connection							
-**	perf	geometric	data:	UBA,	block	entry(x,y,z)	block	exit(x,y,z),	length		
+**	UBA	ff	Status	Connection
+**	perf	geometric	data:	UBA,	block	entry(x,y,z)	block	exit(x,y,z),	length
 **          rad  geofac  wfrac  skin
 GEOMETRY  K  0.0762  0.37  1.0  0.0
       PERF      GEOA  'I18'
-** UBA                 ff          Status  Connection  
+** UBA                 ff          Status  Connection
     34 22 36          1 OPEN    FLOW-FROM  'SURFACE'  REFLAYER
     34 22 37          1 OPEN    FLOW-FROM  1
     34 22 38          1 OPEN    FLOW-FROM  2
@@ -472,20 +468,18 @@ LAYERXYZ  'I18'
     34 22 280  779677.662200  7277769.267000  5750.755580  779674.668700  7277769.642000  5755.541929  5.657815
     34 22 281  779674.668700  7277769.642000  5755.541929  779673.103500  7277769.838000  5758.044565  2.958299
     34 22 282  779673.103500  7277769.838000  5758.044565  779672.491900  7277769.914000  5759.022461  1.155944
-*SHUTIN	'I18'										
-											
-											
-WELL	'I19'	ATTACHTO	'I-PLAT1'								
+
+WELL	'I19'
 INJECTOR 'I19'
 INCOMP  CYCLING
-OPERATE  MAX  BHP  100000.0  CONT REPEAT    **condi��es somente da assimila��o, para as condi��es de previs�o olhar o include de redefinicao das condicoes
+OPERATE  MAX  BHP  100000.0  CONT REPEAT    
 OPERATE  MAX  STG  4000000.0  CONT REPEAT
-**	UBA	ff	Status	Connection							
-**	perf	geometric	data:	UBA,	block	entry(x,y,z)	block	exit(x,y,z),	length		
+**	UBA	ff	Status	Connection
+**	perf	geometric	data:	UBA,	block	entry(x,y,z)	block	exit(x,y,z),	length
 **          rad  geofac  wfrac  skin
 GEOMETRY  K  0.0762  0.37  1.0  0.0
       PERF      GEOA  'I19'
-** UBA                 ff          Status  Connection  
+** UBA                 ff          Status  Connection
     39 13 21          1 OPEN    FLOW-FROM  'SURFACE'  REFLAYER
     39 13 22          1 OPEN    FLOW-FROM  1
     39 13 23          1 OPEN    FLOW-FROM  2
@@ -656,19 +650,16 @@ LAYERXYZ  'I19'
     39 13 224  778908.370600  7279674.137000  5755.383510  778907.536700  7279674.189000  5756.633943  1.503910
     39 13 225  778907.536700  7279674.189000  5756.633943  778906.703000  7279674.242000  5757.884209  1.503709
     39 13 226  778906.703000  7279674.242000  5757.884209  778906.286100  7279674.268000  5758.509277  0.751777
-*SHUTIN	'I19'										
 
-
-**	POCOS INJETORES	- AGUA - SEGUNDA ONDA -	G3 		  **	
-											
-WELL	'I18-W'	ATTACHTO	'I-PLAT1'								
+**	POCOS INJETORES	- AGUA - SEGUNDA ONDA -	G3
+WELL	'I18-W'
 INJECTOR 'I18-W'
 INCOMP  WATER
-OPERATE  MAX  BHP  100000.0  CONT REPEAT    **condi��es somente da assimila��o, para as condi��es de previs�o olhar o include de redefinicao das condicoes
+OPERATE  MAX  BHP  100000.0  CONT REPEAT    
 OPERATE  MAX  STW  10000.0  CONT REPEAT
 GEOMETRY  K  0.0762  0.37  1.0  0.0
       PERF      GEOA  'I18-W'
-** UBA                 ff          Status  Connection  
+** UBA                 ff          Status  Connection
     34 22 36          1 OPEN    FLOW-FROM  'SURFACE'  REFLAYER
     34 22 37          1 OPEN    FLOW-FROM  1
     34 22 38          1 OPEN    FLOW-FROM  2
@@ -849,17 +840,15 @@ LAYERXYZ  'I18-W'
     34 22 280  779677.662200  7277769.267000  5750.755580  779674.668700  7277769.642000  5755.541929  5.657815
     34 22 281  779674.668700  7277769.642000  5755.541929  779673.103500  7277769.838000  5758.044565  2.958299
     34 22 282  779673.103500  7277769.838000  5758.044565  779672.491900  7277769.914000  5759.022461  1.155944
-*SHUTIN	'I18-W'										
-											
-											
-WELL	'I19-W'	ATTACHTO	'I-PLAT1'								
+
+WELL	'I19-W'
 INJECTOR 'I19-W'
 INCOMP  WATER
-OPERATE  MAX  BHP  100000.0  CONT REPEAT    **condi��es somente da assimila��o, para as condi��es de previs�o olhar o include de redefinicao das condicoes
+OPERATE  MAX  BHP  100000.0  CONT REPEAT    
 OPERATE  MAX  STW  10000.0  CONT REPEAT
 GEOMETRY  K  0.0762  0.37  1.0  0.0
       PERF      GEOA  'I19-W'
-** UBA                 ff          Status  Connection  
+** UBA                 ff          Status  Connection
     39 13 21          1 OPEN    FLOW-FROM  'SURFACE'  REFLAYER
     39 13 22          1 OPEN    FLOW-FROM  1
     39 13 23          1 OPEN    FLOW-FROM  2
@@ -1030,10 +1019,3 @@ LAYERXYZ  'I19-W'
     39 13 224  778908.370600  7279674.137000  5755.383510  778907.536700  7279674.189000  5756.633943  1.503910
     39 13 225  778907.536700  7279674.189000  5756.633943  778906.703000  7279674.242000  5757.884209  1.503709
     39 13 226  778906.703000  7279674.242000  5757.884209  778906.286100  7279674.268000  5758.509277  0.751777
-*SHUTIN	'I19-W'		
-
-BHPDEPTH '*' 5400.     ** todos os registradores de pressao na mesma cota.
-
-*APPOR-METHOD *PROD '*' *IP
-*APPOR-METHOD *GASI '*' *IP
-*APPOR-METHOD *WATI '*' *IP
