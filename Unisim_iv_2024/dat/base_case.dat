@@ -118,6 +118,7 @@ DATE 2018 9 2
 INCLUDE '../wells/Wells_base_case.well'
 INCLUDE '../wells/ICV_definition.inc'
 INCLUDE '../hist/Schedule_history_2024.hist'
+** DATE 2024 8 3
 
 INCLUDE '../wells/Wells_base_case_2nd_phase.well'
 INCLUDE '../wells/ICV_definition_2nd_phase.inc'
@@ -125,8 +126,13 @@ INCLUDE '../wells/ICV_definition_2nd_phase.inc'
 INCLUDE '../sch/Plat1.sch'
 INCLUDE '../sch/Wells.sch'
 INCLUDE '../sch/Wells_2nd_phase.sch'
-INCLUDE '../sch/SA_008.inc'
-** DATE 2024 8 3
+
+ON-TIME 'P*'
+0.92
+ON-TIME 'I*'
+0.88
+SHUTIN '*'
+
 
 
 STOP
