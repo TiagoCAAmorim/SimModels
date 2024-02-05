@@ -28,10 +28,10 @@ GRID CORNER 47 39 291
 
 INCLUDE '../grid/CORNERS.grid'
 
-INCLUDE '../grid/PERMI_008.geo'
-INCLUDE '../grid/PERMJ_008.geo'
-INCLUDE '../grid/PERMK_008.geo'
-INCLUDE '../grid/POR_008.geo'
+INCLUDE '../grid/2024/PERMI.geo'
+INCLUDE '../grid/2024/PERMJ.geo'
+INCLUDE '../grid/2024/PERMK.geo'
+INCLUDE '../grid/2024/POR.geo'
 
 TRANSF 'Fault 4'    2.8500468556E-07
 INCLUDE '../grid/Fault_4.flt'
@@ -60,7 +60,7 @@ DENWS   1000
 
 ROCKFLUID
 
-INCLUDE '../grid/RTYPE_008.geo'
+INCLUDE '../grid/2024/RTYPE.geo'
 INCLUDE '../kr/KR_est_1.kr'
 INCLUDE '../kr/KR_coq_1.kr'
 INCLUDE '../kr/KR_Karsts.kr'
@@ -146,6 +146,6 @@ OPEN 'I11-W' 'I13-W' 'I17-W'
 ** INCLUDE '../sch/trigger/ICV_inj.sch'
 ** INCLUDE '../sch/trigger/ICV_inj_2nd_phase.sch'
 
-INCLUDE '../sch/Base_case.sch'
+INCLUDE '../sch/2024/Base_case.sch'
 
 STOP
