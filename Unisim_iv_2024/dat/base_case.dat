@@ -117,7 +117,7 @@ DATE 2018 9 2
 
 INCLUDE '../wells/Wells_base_case.well'
 INCLUDE '../wells/ICV_definition.inc'
-INCLUDE '../hist/groups.inc'
+INCLUDE '../hist/Groups.inc'
 BHPDEPTH '*' 5400.
 SHUTIN '*'
 
@@ -127,7 +127,7 @@ INCLUDE '../hist/Schedule_history_2024.hist'
 INCLUDE '../wells/Wells_base_case_2nd_phase.well'
 INCLUDE '../wells/ICV_definition_2nd_phase.inc'
 
-INCLUDE '../sch/groups.inc'
+INCLUDE '../sch/Groups.inc'
 INCLUDE '../sch/Wells.sch'
 INCLUDE '../sch/Wells_2nd_phase.sch'
 INCLUDE '../sch/Plat1.sch'
@@ -137,5 +137,11 @@ ON-TIME 'P*'
 ON-TIME 'I*'
 0.88
 SHUTIN '*'
+
+OPEN 'P11' 'P13' 'P14' 'P15' 'P16'
+OPEN 'I12' 'I14' 'I15'
+OPEN 'I11-W' 'I13-W' 'I17-W'
+
+INCLUDE '../sch/Base_case.sch'
 
 STOP
