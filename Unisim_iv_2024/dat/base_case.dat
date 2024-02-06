@@ -9,18 +9,22 @@ TITLE1
 
 XDR ON
 INUNIT  SI
+
 WPRN    WELL   TIME
 WPRN    GRID   0
 WPRN    ITER   NONE
 OUTPRN  WELL   BRIEF
 OUTPRN  RES    NONE
 OUTPRN  GRID   NONE
-WSRF    GRID   0
+
+WSRF    GRID   TNEXT
 WSRF    WELL   TIME
-OUTSRF  GRID   NONE
-**OUTSRF  SPECIAL  PAVG
+WSRF    SPECIAL  TIME
+OUTSRF  GRID   SO SG SW PRES VISO VISG VISW Z 'CO2' **NONE
 OUTSRF  WELL   LAYER  NONE
-OUTSRF  RES    NONE
+OUTSRF  RES    ALL **NONE
+OUTSRF  SPECIAL  SIMPERF
+
 WRST 0
 
 
@@ -28,10 +32,10 @@ GRID CORNER 47 39 291
 
 INCLUDE '../grid/CORNERS.grid'
 
-INCLUDE '../grid/PERMI_008.geo'
-INCLUDE '../grid/PERMJ_008.geo'
-INCLUDE '../grid/PERMK_008.geo'
-INCLUDE '../grid/POR_008.geo'
+INCLUDE '../grid/2024/PERMI.geo'
+INCLUDE '../grid/2024/PERMJ.geo'
+INCLUDE '../grid/2024/PERMK.geo'
+INCLUDE '../grid/2024/POR.geo'
 
 TRANSF 'Fault 4'    2.8500468556E-07
 INCLUDE '../grid/Fault_4.flt'
@@ -60,7 +64,7 @@ DENWS   1000
 
 ROCKFLUID
 
-INCLUDE '../grid/RTYPE_008.geo'
+INCLUDE '../grid/2024/RTYPE.geo'
 INCLUDE '../kr/KR_est_1.kr'
 INCLUDE '../kr/KR_coq_1.kr'
 INCLUDE '../kr/KR_Karsts.kr'
@@ -95,21 +99,13 @@ SEPARATOR
 
 
 NUMERICAL
-DTMAX 31
-DTMIN 0.000001
 NORM PRESS 700
 NORM SATUR 0.1
 NORM GMOLAR 0.05
 MAXCHANGE PRESS 1500000
 MAXCHANGE SATUR 0.99
 MAXCHANGE GMOLAR 0.99
-CONVERGE MAXRES 0.01
-PRECC 1e-5
-NORTH 100
-ITERMAX 200
-SOLVER PARASOL
-AIM THRESH 0.25
-**ADTSC ALLOW NORMS_MAXCHANGES
+ADTSC ALLOW NORMS_MAXCHANGES
 
 
 RUN
@@ -117,9 +113,33 @@ DATE 2018 9 2
 
 INCLUDE '../wells/Wells_base_case.well'
 INCLUDE '../wells/ICV_definition.inc'
+INCLUDE '../hist/Groups.inc'
+BHPDEPTH '*' 5400.
+SHUTIN '*'
+
 INCLUDE '../hist/Schedule_history_2024.hist'
 
-INCLUDE '../sch/Well_plat_redefinition.sch'
-INCLUDE '../sch/SA_008.inc'
-** DATE 2024 8 3
+INCLUDE '../wells/Wells_base_case_2nd_phase.well'
+INCLUDE '../wells/ICV_definition_2nd_phase.inc'
+
+INCLUDE '../sch/Groups.inc'
+INCLUDE '../sch/Wells.sch'
+INCLUDE '../sch/Wells_2nd_phase.sch'
+INCLUDE '../sch/Plat1.sch'
+
+ON-TIME 'P*'
+0.92
+ON-TIME 'I*'
+0.88
+SHUTIN '*'
+
+OPEN 'P11' 'P12' 'P13' 'P14' 'P15' 'P16'
+OPEN 'I12' 'I14' 'I15' 'I16'
+OPEN 'I11-W' 'I13-W' 'I17-W'
+
+** INCLUDE '../sch/trigger/ICV_prod.sch'
+** INCLUDE '../sch/trigger/ICV_prod_2nd_phase.sch'
+
+INCLUDE '../sch/2024/Base_case.sch'
+
 STOP
