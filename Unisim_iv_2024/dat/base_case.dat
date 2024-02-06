@@ -139,8 +139,6 @@ OPEN 'I11-W' 'I13-W' 'I17-W'
 
 ** INCLUDE '../sch/trigger/ICV_prod.sch'
 ** INCLUDE '../sch/trigger/ICV_prod_2nd_phase.sch'
-** INCLUDE '../sch/trigger/ICV_inj.sch'
-** INCLUDE '../sch/trigger/ICV_inj_2nd_phase.sch'
 
 INCLUDE '../sch/2024/Base_case.sch'
 
