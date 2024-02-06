@@ -53,7 +53,7 @@ PRPOR 50000
 PVCUTOFF 2000
 
 
-INCLUDE '../pvt/EOS_1.pvt'
+INCLUDE '../pvt/EOS_0.pvt'
 
 REFPW   62000
 CW      5E-07
