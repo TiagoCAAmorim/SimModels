@@ -133,8 +133,8 @@ ON-TIME 'I*'
 0.88
 SHUTIN '*'
 
-OPEN 'P11' 'P13' 'P14' 'P15' 'P16'
-OPEN 'I12' 'I14' 'I15'
+OPEN 'P11' 'P12' 'P13' 'P14' 'P15' 'P16'
+OPEN 'I12' 'I14' 'I15' 'I16'
 OPEN 'I11-W' 'I13-W' 'I17-W'
 
 ** INCLUDE '../sch/trigger/ICV_prod.sch'
