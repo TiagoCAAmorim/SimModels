@@ -162,3 +162,5 @@ cython_debug/
 *.out
 *.sr3
 *.log
+
+/no_sync
