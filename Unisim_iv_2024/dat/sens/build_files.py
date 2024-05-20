@@ -25,6 +25,12 @@ def list_files(folder_path, with_extensions=True):
         print(f"Folder '{folder_path}' not found.")
         return []
 
+def delete_files(folder_path, extensions=[]):
+    for f in list_files(folder_path):
+        file = folder_path/f
+        if file.suffix in extensions:
+            file.unlink()
+
 
 def get_all_combinations(dict_of_lists):
     """ Get all combinations """
@@ -62,11 +68,14 @@ def zip_files(folder_path):
 def make(folder_path, variable_dict):
     """ Wrapper """
     folder_path = Path(folder_path)
+    delete_files(
+        folder_path=folder_path,
+        extensions=['.dat','.csv'])
     build_table(
         variable_dict=variable_dict,
         output_file_path=folder_path/'var_table.csv')
     build_files(
-        template_path=folder_path/'template.dat',
+        template_path=folder_path/'template.cmm',
         var_table_path=folder_path/'var_table.csv',
         output_file_path=folder_path/'sens.dat')
     zip_files(folder_path)
@@ -74,14 +83,16 @@ def make(folder_path, variable_dict):
 
 if __name__ == '__main__':
 
+    prior = list(range(1, 101))
+
     # 2nd wave fixed
 
     folder = 'Unisim_iv_2024/dat/sens/2nd_wave_fixed'
     var_dict = {
-        'prior': list(range(1, 5)),
+        'prior': prior,
         'eos': [0],
         'kr': [1],
-        'sch': list_files('Unisim_iv_2024/sch/sens/2024/2nd_wave_fixed', with_extensions=False)[::5]
+        'sch': list_files('Unisim_iv_2024/sch/sens/2024/2nd_wave_fixed', with_extensions=False)[::3]
     }
     make(folder_path=folder, variable_dict=var_dict)
 
@@ -90,10 +101,10 @@ if __name__ == '__main__':
 
     folder = 'Unisim_iv_2024/dat/sens/2nd_wave_wag'
     var_dict = {
-        'prior': list(range(1, 5)),
+        'prior': prior,
         'eos': [0],
         'kr': [1],
-        'sch': list_files('Unisim_iv_2024/sch/sens/2024/2nd_wave_wag', with_extensions=False)[::5]
+        'sch': list_files('Unisim_iv_2024/sch/sens/2024/2nd_wave_wag', with_extensions=False)[::3]
     }
     make(folder_path=folder, variable_dict=var_dict)
 
@@ -102,7 +113,7 @@ if __name__ == '__main__':
 
     folder = 'Unisim_iv_2024/dat/sens/plat_max_qg'
     var_dict = {
-        'prior': list(range(1, 5)),
+        'prior': prior,
         'eos': [0],
         'kr': [1],
         'qgmax': list(range(5, 16))
@@ -114,7 +125,7 @@ if __name__ == '__main__':
 
     folder = 'Unisim_iv_2024/dat/sens/trigger_gor'
     var_dict = {
-        'prior': list(range(1, 5)),
+        'prior': prior,
         'eos': [0],
         'kr': [1],
         'gormax': [i*100 for i in range(10, 21)]
@@ -126,9 +137,9 @@ if __name__ == '__main__':
 
     folder = 'Unisim_iv_2024/dat/sens/wag_duration'
     var_dict = {
-        'prior': list(range(1, 5)),
+        'prior': prior,
         'eos': [0],
         'kr': [1],
-        'wag_days': [i*20 for i in range(3, 16)]
+        'wag_days': [i*20 for i in range(3, 16)][::2]
     }
     make(folder_path=folder, variable_dict=var_dict)
