@@ -3,6 +3,7 @@ Generate files from template
 """
 import sys
 import itertools
+import numpy as np
 from pathlib import Path
 import common
 
@@ -10,9 +11,11 @@ sys.path.insert(0, './python')
 from simpython.common import template  # type: ignore # pylint: disable=import-error,wrong-import-position
 
 
-def get_all_combinations(dict_of_lists):
+def get_all_combinations(dict_of_lists, verbose=False):
     """ Get all combinations """
     all_combinations = list(itertools.product(*dict_of_lists.values()))
+    if verbose:
+        print(f'Number of combinations: {len(all_combinations)}.')
     return all_combinations
 
 
@@ -20,7 +23,7 @@ def build_table(variable_dict, output_file_path):
     """ Save all combinations to a CSV file """
     common.save_to_csv(
         header=variable_dict.keys(),
-        values=get_all_combinations(variable_dict),
+        values=get_all_combinations(variable_dict, verbose=True),
         output_file_path=output_file_path)
 
 
@@ -35,6 +38,7 @@ def build_files(template_path, var_table_path, output_file_path):
 
 def make(folder_path, variable_dict):
     """ Wrapper """
+    print(f'### {folder_path} ###')
     folder_path = Path(folder_path)
     common.delete_files(
         folder_path=folder_path,
@@ -117,5 +121,19 @@ if __name__ == '__main__':
         'eos': [0],
         'kr': [1],
         'wag_days': [i*20 for i in range(3, 16)][::2]
+    }
+    make(folder_path=folder, variable_dict=var_dict)
+
+
+    # CMOST
+
+    folder = 'Unisim_iv_2024/dat/sens/cmost'
+    var_dict = {
+        'prior': [1,2,3],
+        'eos': [0,1,2],
+        'kr': [0,1,2],
+        'fault': np.logspace(-3, -1, num=3),
+        'uw': [0.25,0.35,0.45],
+        'woc': np.linspace(5650, 5750., 3),
     }
     make(folder_path=folder, variable_dict=var_dict)
