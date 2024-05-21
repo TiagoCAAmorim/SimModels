@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 import numpy as np
 import pandas as pd  # pylint: disable=import-error
+import shutil
 import common
 
 sys.path.insert(0, './python')
@@ -68,6 +69,7 @@ def make_csv(folder_path):
             df = pd.DataFrame(all_data)
             df.to_csv(folder_path/f"{file[:-4]}.csv", header=all_header, index=False)
 
+
 def make_zip(folder_path):
     """ Zips CSV files """
     file_list_group = []
@@ -92,24 +94,42 @@ def make_zip(folder_path):
             delete_original=True)
 
 
+def move_sr3(folder_path):
+    """ Move all sr3 files to a subfolder """
+    file_list = []
+    for file in common.list_files(folder_path):
+        if file[-4:] == '.sr3':
+            file_list.append(file)
+    if len(file_list) > 0:
+        subfolder_path = folder_path / "sr3"
+        subfolder_path.mkdir(parents=True, exist_ok=True)
+        for filename in file_list:
+            source_path = folder_path / filename
+            destination_path = subfolder_path / filename
+            shutil.move(source_path, destination_path)
+
+
+def make(folder_path):
+    """ Wrapper """
+    folder_path=Path(folder_path)
+    make_csv(folder_path)
+    make_zip(folder_path)
+    move_sr3(folder_path)
+
+
 if __name__ == '__main__':
 
     folder = 'Unisim_iv_2024/dat/sens/2nd_wave_fixed'
-    make_csv(folder_path=Path(folder))
-    make_zip(folder_path=Path(folder))
+    make(folder)
 
     folder = 'Unisim_iv_2024/dat/sens/2nd_wave_wag'
-    make_csv(folder_path=Path(folder))
-    make_zip(folder_path=Path(folder))
+    make(folder)
 
     folder = 'Unisim_iv_2024/dat/sens/plat_max_qg'
-    make_csv(folder_path=Path(folder))
-    make_zip(folder_path=Path(folder))
+    make(folder)
 
     folder = 'Unisim_iv_2024/dat/sens/trigger_gor'
-    make_csv(folder_path=Path(folder))
-    make_zip(folder_path=Path(folder))
+    make(folder)
 
     folder = 'Unisim_iv_2024/dat/sens/wag_duration'
-    make_csv(folder_path=Path(folder))
-    make_zip(folder_path=Path(folder))
+    make(folder)
