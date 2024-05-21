@@ -38,12 +38,15 @@ def save_to_csv(header, values, output_file_path):
     df.to_csv(output_file_path, index=True)
 
 
-def zip_files(folder_path, extensions=None, file_name='archive'):
+def zip_files(folder_path, extensions=None, file_name='archive', delete_original=False):
     """ Zip all files in a folder with a given extension """
     with zipfile.ZipFile(folder_path/f'{file_name}.zip', 'w', zipfile.ZIP_DEFLATED) as myzip:
         for filename in list_files(folder_path):
-            if (extensions is None) or (filename[-4:] in extensions):
+            file = folder_path/filename
+            if (extensions is None) or (file.suffix in extensions):
                 myzip.write(folder_path/filename, arcname=filename)
+                if delete_original:
+                    file.unlink()
 
 
 if __name__ == '__main__':

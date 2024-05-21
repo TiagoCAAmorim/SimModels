@@ -48,8 +48,9 @@ def make(folder_path, variable_dict):
         output_file_path=folder_path/'sens.dat')
     common.zip_files(
         folder_path=folder_path,
-        extensions=['.dat','.csv'],
-        file_name='dat_files')
+        extensions=['.dat'],
+        file_name='dat_files',
+        delete_original=True)
 
 
 if __name__ == '__main__':
