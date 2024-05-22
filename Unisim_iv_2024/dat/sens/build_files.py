@@ -129,11 +129,11 @@ if __name__ == '__main__':
 
     folder = 'Unisim_iv_2024/dat/sens/cmost'
     var_dict = {
-        'prior': [1,2,3],
+        'prior': [82, 51, 99, 4, 48], #[82, 35, 51, 76, 99, 72, 4, 22, 48]
         'eos': [0,1,2],
         'kr': [0,1,2],
         'fault': np.logspace(-3, -1, num=3),
         'uw': [0.25,0.35,0.45],
-        'woc': np.linspace(5650, 5750., 3),
+        'woc': np.linspace(5650., 5750., 3),
     }
     make(folder_path=folder, variable_dict=var_dict)
