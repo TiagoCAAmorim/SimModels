@@ -19,9 +19,13 @@ def make_csv(folder_path):
         if file[-4:] == '.sr3':
             print(f'Reading {file}...')
             sr3 = sr3reader.Sr3Reader(folder_path/file)
+            days_ = sr3.get_days('group')
             if days is None:
-                days_ = sr3.get_days('group')
                 days = np.linspace(days_[0], days_[-1], 363)
+
+            if days_[-1] < days[-1]:
+                print(f' Incomplete data in {file}.')
+                continue
 
             property_names=['QO','QW','QG','NP','GP','WP','QO_RC','QG_RC','QW_RC']
             element_names=['FIELD-PRO','FIELD-INJ']
