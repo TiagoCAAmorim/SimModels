@@ -544,9 +544,10 @@ class Sr3Reader:
             s = f"TimeSeries/{el_type_string}/{dataset_string}"
         if s in self._f:
             return self._f[s]
-        msg1 = f"Dataset {dataset_string} not found for "
-        msg2 = f"{element_type}. {s} does not exist."
-        raise ValueError(msg1+msg2)
+        return []
+        # msg1 = f"Dataset {dataset_string} not found for "
+        # msg2 = f"{element_type}. {s} does not exist."
+        # raise ValueError(msg1+msg2)
 
     @_need_read_file  # type: ignore[arg-type]
     def _get_elements(self, element_type):
@@ -651,7 +652,8 @@ class Sr3Reader:
                 ok = True
         if not ok:
             msg = f'Property not found: {previous_property}'
-            raise ValueError(msg)
+            print(msg)
+            # raise ValueError(msg)
 
     @_need_read_file  # type: ignore[arg-type]
     def _get_timesteps(self, element_type):
@@ -705,10 +707,13 @@ class Sr3Reader:
             raise ValueError(msg)
         if element_type not in self._day:
             timesteps = self.get_timesteps(element_type=element_type)
-            days = np.vectorize(lambda x: self._all_days[x])(
-                timesteps
-            )
-            self._day[element_type] = days
+            if len(timesteps) > 0:
+                days = np.vectorize(lambda x: self._all_days[x])(
+                    timesteps
+                )
+                self._day[element_type] = days
+            else:
+                self._day[element_type] = []
         return self._day[element_type]
 
     def get_dates(self, element_type=None):
@@ -730,10 +735,13 @@ class Sr3Reader:
             raise ValueError(msg)
         if element_type not in self._date:
             timesteps = self.get_timesteps(element_type=element_type)
-            dates = np.vectorize(lambda x: self._all_dates[x])(
-                timesteps
-            )
-            self._date[element_type] = dates
+            if len(timesteps) > 0:
+                dates = np.vectorize(lambda x: self._all_dates[x])(
+                    timesteps
+                )
+                self._date[element_type] = dates
+            else:
+                self._date[element_type] = []
         return self._date[element_type]
 
     def day2date(self, day):
