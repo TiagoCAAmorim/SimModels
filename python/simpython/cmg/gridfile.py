@@ -221,39 +221,41 @@ class GridFile:
             raise ValueError("Input file is not a grid file!")
         self._data = data
 
-    def write(self, output_file_path=None):
+    @staticmethod
+    def write_(output_file_path, values, keyword, comments, encoding='utf-8', max_line_size=80):
         """Writes grid file.
 
             Parameters
             ----------
-            output_file_path: str, optional
+            output_file_path: str
                 Path to output file
-                (default: file_path)
+            values: list of float/int
+                list of values
+            keyword: list of str
+                associated keyword
+            comments: list of str
+                associated comments
 
             Raises
             ------
             ValueError
                 If an invalid path is provided.
         """
-        if output_file_path is None:
-            output_file_path = self._file_path
-        else:
-            output_file_path = Path(output_file_path)
 
-        lines = self._data['comments'].copy()
-        lines.append(self._data['keyword'])
+        lines = [comments]
+        lines.append(keyword)
 
         current_line = ''
 
         def add_line(s, current_line):
-            if len(current_line) + len(s) > self._max_line_size:
+            if len(current_line) + len(s) > max_line_size:
                 lines.append(current_line)
                 current_line = ''
             return current_line + s
 
         current_value = 0
         n_values = 0
-        for value in self._data['values']:
+        for value in values:
             if value == current_value:
                 n_values += 1
             else:
@@ -273,11 +275,37 @@ class GridFile:
 
         content = '\n'.join(lines)
         try:
-            output_file_path.write_text(content, encoding=self._encoding)
+            output_file_path.write_text(content, encoding=encoding)
         except (ValueError, TypeError, NameError) as e:
             msg = f'Could not write file: {
                 output_file_path}'
             raise ValueError(msg) from e
+
+    def write(self, output_file_path=None):
+        """Writes grid file.
+
+            Parameters
+            ----------
+            output_file_path: str, optional
+                Path to output file
+                (default: file_path)
+
+            Raises
+            ------
+            ValueError
+                If an invalid path is provided.
+        """
+        if output_file_path is None:
+            output_file_path = self._file_path
+        else:
+            output_file_path = Path(output_file_path)
+        write_(
+            output_file_path=output_file_path,
+            values=self._data['values'],
+            keyword=self._data['keyword'],
+            comments=self._data['comments'],
+            encoding=self._encoding,
+            max_line_size=self._max_line_size)
 
     def rewrite_all_grid_files(self, folder_path=None, new_suffix=None, verbose=False):
         """Rewrites all grid file found in folder.
