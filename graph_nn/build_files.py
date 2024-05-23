@@ -68,3 +68,15 @@ if __name__ == '__main__':
         'sch': [1,2,3]
     }
     make(folder_path=folder, variable_dict=var_dict)
+
+    folder = 'graph_nn/2d_test/dat'
+    var_dict = {
+        'prior': [27, 14],
+        'layer': [0, 1, 2, 3],
+        'sch': [1,2,3,4],
+        'ip01': [1,2],
+        'jp01': [1,2],
+        'ii01': [4,5],
+        'ji01': [4,5],
+    }
+    make(folder_path=folder, variable_dict=var_dict)
