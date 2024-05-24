@@ -155,11 +155,11 @@ def get_wells_positions(file_path, wells, ni, nj):
     return positions
 
 
-def build_data_file(folder_path, ni, nj, nk, output_file_name, wells, var_table_path):
+def build_data_file(folder_path, n_files, ni, nj, nk, output_file_name, wells, var_table_path):
     """ Reads all SR3 files into a single csv """
     folder_path = Path(folder_path)
 
-    col_names = {'in': [], 'out': []}
+    col_names = {'in': ['index'], 'out': ['index']}
     for k in columns():
         x = _col_type(k)
         col = k.replace(f'_{x}','')
@@ -179,7 +179,7 @@ def build_data_file(folder_path, ni, nj, nk, output_file_name, wells, var_table_
     random.seed(42)
     random.shuffle(files)
 
-    for file in tqdm(files[:50]):
+    for file in tqdm(files[:n_files]):
         if file[-4:] == '.sr3':
             index_ = file.replace('sens_','').replace('.sr3','')
             index_ = int(index_)
@@ -191,8 +191,8 @@ def build_data_file(folder_path, ni, nj, nk, output_file_name, wells, var_table_
             data = read_data(sr3)
             for data_ in data:
                 lines = organize_data(data_, wells_ij[index_])
-                df_in.loc[len(df_in)] = lines['in']
-                df_out.loc[len(df_out)] = lines['out']
+                df_in.loc[len(df_in)] = np.concatenate(([index_], lines['in']))
+                df_out.loc[len(df_out)] = np.concatenate(([index_], lines['out']))
 
     df_in.to_csv(folder_path/f'X_{output_file_name}', header=df_in.columns, index=True)
     df_out.to_csv(folder_path/f'y_{output_file_name}', header=df_out.columns, index=True)
@@ -202,6 +202,7 @@ if __name__ == '__main__':
 
     options = {
         'folder_path':'graph_nn/2d/sr3',
+        'n_files': 50,
         'var_table_path':'graph_nn/2d/dat/var_table.csv',
         'ni': 5,
         'nj': 5,
@@ -210,6 +211,22 @@ if __name__ == '__main__':
         'wells':{
             'P01':(1,1,1),
             'I01':(5,5,1)
+        }
+    }
+
+    build_data_file(**options)
+
+    options = {
+        'folder_path':'graph_nn/2d_test/sr3',
+        'n_files': 5,
+        'var_table_path':'graph_nn/2d_test/dat/var_table.csv',
+        'ni': 5,
+        'nj': 5,
+        'nk': 1,
+        'output_file_name':'test.csv',
+        'wells':{
+            'P01':('ip01','jp01',1),
+            'I01':('ii01','ji01',1)
         }
     }
 
