@@ -644,15 +644,15 @@ class Sr3Reader:
                     msg = f'Property already exists: {new_property}'
                     raise ValueError(msg)
 
-        ok = False
+        # ok = False
         for element in self._element_types:
             if previous_property in self.get_properties(element):
                 self._property[element][new_property] = self._property[element][previous_property]
                 self._master_property_list[new_property] = self._master_property_list[previous_property]
-                ok = True
-        if not ok:
-            msg = f'Property not found: {previous_property}'
-            print(msg)
+                # ok = True
+        # if not ok:
+            # msg = f'Property not found: {previous_property}'
+            # print(msg)
             # raise ValueError(msg)
 
     @_need_read_file  # type: ignore[arg-type]
@@ -1291,7 +1291,7 @@ class Sr3Reader:
         indexes = self._get_single_grid_property(
             property_name="IPSTCS", ts=0, element_names=element_names
         )
-        new_array[indexes - 1] = values
+        new_array[indexes - 1] = values.reshape(-1)
 
         if element_names == ["MATRIX"]:
             return new_array[:ni * nj * nk]
@@ -1412,7 +1412,9 @@ class Sr3Reader:
     def get_grid_data(self,
                       property_names,
                       day=None,
-                      element_names=None):
+                      element_names=None,
+                      return_complete=False,
+                      default=0):
         """Returns grid data
 
         Parameters
@@ -1427,13 +1429,27 @@ class Sr3Reader:
             List of days to return data.
             Returns all timesteps if None.
             (default: None)
+        return_complete: [bool], optional
+            Returns array with values for
+            all cells.
+            (default: False)
+        default: [int/float], optional
+            Value to be used in the inactive
+            cells.
+            (default: 0)
 
         Raises
         ------
         ValueError
             If property_name is not found.
         """
-        return self._get_grid_data_interpolated(
+        data= self._get_grid_data_interpolated(
             property_names=property_names,
             day=day,
             element_names=element_names)
+        if return_complete:
+            return self._get_grid_data_to_complete(
+                data,
+                element_names=element_names,
+                default=default)
+        return data
