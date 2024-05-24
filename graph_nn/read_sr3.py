@@ -3,9 +3,11 @@ Read all SR3 in a folder and generate CSV files
 """
 import sys
 from pathlib import Path
+import random
 import numpy as np
 import pandas as pd  # pylint: disable=import-error
 import common
+from tqdm import tqdm
 
 sys.path.insert(0, './python')
 from simpython.cmg import sr3reader  # type: ignore # pylint: disable=import-error,wrong-import-position
@@ -173,12 +175,19 @@ def build_data_file(folder_path, ni, nj, nk, output_file_name, wells, var_table_
         ni=ni,
         nj=nj)
 
-    for file in common.list_files(folder_path):
+    files = common.list_files(folder_path)
+    random.seed(42)
+    random.shuffle(files)
+
+    for file in tqdm(files[:50]):
         if file[-4:] == '.sr3':
-            print(f'Reading {file}...')
             index_ = file.replace('sens_','').replace('.sr3','')
             index_ = int(index_)
-            sr3 = sr3reader.Sr3Reader(folder_path/file)
+            try:
+                sr3 = sr3reader.Sr3Reader(folder_path/file)
+            except:  # pylint: disable=bare-except
+                print(f'Error reading {file}.')
+                continue
             data = read_data(sr3)
             for data_ in data:
                 lines = organize_data(data_, wells_ij[index_])
