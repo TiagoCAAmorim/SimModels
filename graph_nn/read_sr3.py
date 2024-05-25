@@ -128,9 +128,9 @@ def organize_data(data, wells_ij):
         if isinstance(data[k], np.ndarray):
             if line[x] is None:
                 n_cell = len(data[k])
-                line[x] = data[k].reshape(-1,1)
+                line[x] = data[k].reshape(-1)
             else:
-                line[x] = np.concatenate((line[x], data[k].reshape(-1,1)), axis=1)
+                line[x] = np.concatenate((line[x], data[k].reshape(-1)), axis=0)
         else:
             array_ = np.zeros(n_cell)
             p = wells_ij[v['name']]
@@ -138,9 +138,9 @@ def organize_data(data, wells_ij):
                 array_[p] = data[k] - data[f'Pres_{x}'][p]
             else:
                 array_[p] = data[k]
-            line[x] = np.concatenate((line[x], array_.reshape(-1,1)), axis=1)
-    for k in line:
-        line[k] = line[k].reshape(-1)
+            line[x] = np.concatenate((line[x], array_.reshape(-1)), axis=0)
+    # for k in line:
+        # line[k] = line[k].reshape(-1)
     return line
 
 
@@ -171,9 +171,9 @@ def build_data_file(folder_path, n_files, ni, nj, nk, output_file_name, wells, v
         names[k].append(col)
     col_names = {'in': ['index'], 'out': ['index']}
     for k,v in names.items():
-        for i in range(ni*nj*nk):
+        for col in v:
             col_names[k].extend(
-                [f'{col}_{i}' for col in v]
+                [f'{col}_{i}' for i in range(ni*nj*nk)]
             )
 
     df_in = pd.DataFrame(columns=col_names['in'])
