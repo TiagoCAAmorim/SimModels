@@ -33,8 +33,8 @@ def columns():
         'QwI_in':{'element':'well', 'name':'I01', 'property':'WP', 'operation':'delta'},
 
         # Output
-        'Sw_out':{'element':'grid', 'property':'SW', 'delta_t':1},
         'Pres_out':{'element':'grid', 'property':'PRES', 'delta_t':1},
+        'Sw_out':{'element':'grid', 'property':'SW', 'delta_t':1},
         'Kro_out':{'element':'grid', 'property':'KRO', 'delta_t':1},
         'Krw_out':{'element':'grid', 'property':'KRW', 'delta_t':1},
 
@@ -119,15 +119,18 @@ def _col_type(col_name):
 def organize_data(data, wells_ij):
     """ Organizes data into a single line """
     line = {
-        'in':np.array([]),
-        'out':np.array([])
+        'in':None,
+        'out':None
     }
     for k,v in columns().items():
         x = _col_type(k)
 
         if isinstance(data[k], np.ndarray):
-            n_cell = len(data[k])
-            line[x] = np.concatenate((line[x], data[k]))
+            if line[x] is None:
+                n_cell = len(data[k])
+                line[x] = data[k].reshape(-1,1)
+            else:
+                line[x] = np.concatenate((line[x], data[k].reshape(-1,1)), axis=1)
         else:
             array_ = np.zeros(n_cell)
             p = wells_ij[v['name']]
@@ -135,7 +138,9 @@ def organize_data(data, wells_ij):
                 array_[p] = data[k] - data[f'Pres_{x}'][p]
             else:
                 array_[p] = data[k]
-            line[x] = np.concatenate((line[x], array_))
+            line[x] = np.concatenate((line[x], array_.reshape(-1,1)), axis=1)
+    for k in line:
+        line[k] = line[k].reshape(-1)
     return line
 
 
@@ -159,13 +164,18 @@ def build_data_file(folder_path, n_files, ni, nj, nk, output_file_name, wells, v
     """ Reads all SR3 files into a single csv """
     folder_path = Path(folder_path)
 
+    names = {'in': [], 'out': []}
+    for c in columns():
+        k = _col_type(c)
+        col = c.replace(f'_{k}','')
+        names[k].append(col)
     col_names = {'in': ['index'], 'out': ['index']}
-    for k in columns():
-        x = _col_type(k)
-        col = k.replace(f'_{x}','')
-        col_names[x].extend(
-            [f'{col}_{i}' for i in range(ni*nj*nk)]
-        )
+    for k,v in names.items():
+        for i in range(ni*nj*nk):
+            col_names[k].extend(
+                [f'{col}_{i}' for col in v]
+            )
+
     df_in = pd.DataFrame(columns=col_names['in'])
     df_out = pd.DataFrame(columns=col_names['out'])
 
