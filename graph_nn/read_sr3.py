@@ -65,7 +65,7 @@ def valid_days(sr3):
     return valid
 
 
-def read_data(sr3):
+def read_data(sr3, days=None):
     """ Reads a SR3 file """
 
     def _apply_operation(data, operation):
@@ -85,7 +85,9 @@ def read_data(sr3):
 
     sr3.open()
     data = []
-    for day in valid_days(sr3):
+    if days is None:
+        days = valid_days(sr3)
+    for day in days:
         data_ = {}
         for k,v in columns().items():
             if v['element'] == 'grid':
