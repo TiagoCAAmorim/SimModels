@@ -134,10 +134,10 @@ def organize_data(data, wells_ij):
         else:
             array_ = np.zeros(n_cell)
             p = wells_ij[v['name']]
-            if v['property'] == 'BHP':
-                array_[p] = data[k] - data[f'Pres_{x}'][p]
-            else:
-                array_[p] = data[k]
+            # if v['property'] == 'BHP':
+            #     array_[p] = data[k] - data[f'Pres_{x}'][p]
+            # else:
+            array_[p] = data[k]
             line[x] = np.concatenate((line[x], array_.reshape(-1)), axis=0)
     # for k in line:
         # line[k] = line[k].reshape(-1)
