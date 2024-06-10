@@ -85,10 +85,22 @@ def read_data(sr3, days=None):
 
     sr3.open()
     data = []
+
+    w_inj_final = sr3.get_data(
+        element_type='well',
+        property_names='WP',
+        element_names='I01')[-1]
+    np_final = sr3.get_data(
+        element_type='well',
+        property_names='NP',
+        element_names='P01')[-1]
+    if w_inj_final[1]*np_final[1] == 0:
+        return data
+
     if days is None:
         days = valid_days(sr3)
     for day in days:
-        data_ = {}
+        data_ = {'day':day}
         for k,v in columns().items():
             if v['element'] == 'grid':
                 if v['delta_t'] is None:
@@ -115,7 +127,9 @@ def read_data(sr3, days=None):
 def _col_type(col_name):
     if col_name[-2:]=='in':
         return 'in'
-    return 'out'
+    if col_name[-3:]=='out':
+        return 'out'
+    return None
 
 
 def organize_data(data, wells_ij):
@@ -127,22 +141,18 @@ def organize_data(data, wells_ij):
     for k,v in columns().items():
         x = _col_type(k)
 
-        if isinstance(data[k], np.ndarray):
-            if line[x] is None:
-                n_cell = len(data[k])
-                line[x] = data[k].reshape(-1)
+        if x is not None:
+            if isinstance(data[k], np.ndarray):
+                if line[x] is None:
+                    n_cell = len(data[k])
+                    line[x] = data[k].reshape(-1)
+                else:
+                    line[x] = np.concatenate((line[x], data[k].reshape(-1)), axis=0)
             else:
-                line[x] = np.concatenate((line[x], data[k].reshape(-1)), axis=0)
-        else:
-            array_ = np.zeros(n_cell)
-            p = wells_ij[v['name']]
-            # if v['property'] == 'BHP':
-            #     array_[p] = data[k] - data[f'Pres_{x}'][p]
-            # else:
-            array_[p] = data[k]
-            line[x] = np.concatenate((line[x], array_.reshape(-1)), axis=0)
-    # for k in line:
-        # line[k] = line[k].reshape(-1)
+                array_ = np.zeros(n_cell)
+                p = wells_ij[v['name']]
+                array_[p] = data[k]
+                line[x] = np.concatenate((line[x], array_.reshape(-1)), axis=0)
     return line
 
 
@@ -171,7 +181,7 @@ def build_data_file(folder_path, n_files, ni, nj, nk, output_file_name, wells, v
         k = _col_type(c)
         col = c.replace(f'_{k}','')
         names[k].append(col)
-    col_names = {'in': ['index'], 'out': ['index']}
+    col_names = {'in': ['index', 'day'], 'out': ['index', 'day']}
     for k,v in names.items():
         for col in v:
             col_names[k].extend(
@@ -201,10 +211,14 @@ def build_data_file(folder_path, n_files, ni, nj, nk, output_file_name, wells, v
                 print(f'Error reading {file}.')
                 continue
             data = read_data(sr3)
-            for data_ in data:
-                lines = organize_data(data_, wells_ij[index_])
-                df_in.loc[len(df_in)] = np.concatenate(([index_], lines['in']))
-                df_out.loc[len(df_out)] = np.concatenate(([index_], lines['out']))
+            if len(data) == 0:
+                print(f'Invalid simulation: {file}.')
+            else:
+                for data_ in data:
+                    day = data_['day']
+                    lines = organize_data(data_, wells_ij[index_])
+                    df_in.loc[len(df_in)] = np.concatenate(([index_], [day], lines['in']))
+                    df_out.loc[len(df_out)] = np.concatenate(([index_], [day], lines['out']))
 
     df_in.to_csv(folder_path/f'X_{output_file_name}', header=df_in.columns, index=True)
     df_out.to_csv(folder_path/f'y_{output_file_name}', header=df_out.columns, index=True)
@@ -230,7 +244,7 @@ if __name__ == '__main__':
 
     options = {
         'folder_path':'graph_nn/2d_test/sr3',
-        'n_files': 5,
+        'n_files': 10,
         'var_table_path':'graph_nn/2d_test/dat/var_table.csv',
         'ni': 5,
         'nj': 5,
