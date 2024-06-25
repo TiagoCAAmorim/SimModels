@@ -1,0 +1,12 @@
+case,n_blocks,latent_size,activation,ni, nj,batch_size,optimizer,lr,val_loss
+base,5,8,Relu,10,10,64,RMSprop,0.01,2.527
+blocks_up,10,8,Relu,10,10,64,RMSprop,0.01,2.405
+latend_down,5,4,Relu,10,10,64,RMSprop,0.01,8.337
+latend_up,5,16,Relu,10,10,64,RMSprop,0.01,2.156
+latend_up+adam,5,16,Relu,10,10,64,Adam,0.01,1.415
+blocks_up+latend_up,10,16,Relu,10,10,64,RMSprop,0.01,8.335
+blocks_down+latend_up,3,16,Relu,10,10,64,RMSprop,0.01,2.008
+batch_down,5,8,Relu,10,10,32,RMSprop,0.01,2.341
+img_up,5,8,Relu,30,30,64,RMSprop,0.01,8.326
+img_down,5,8,Relu,5,5,64,RMSprop,0.01,2.265
+lr_down,5,8,Relu,10,10,64,RMSprop,0.001,2.328
