@@ -3,12 +3,10 @@ Generate files from template
 """
 import sys
 import itertools
-import numpy as np
 from pathlib import Path
-import common
 
 sys.path.insert(0, './python')
-from simpython.common import template  # type: ignore # pylint: disable=import-error,wrong-import-position
+from simpython.common import template, file_utils  # type: ignore # pylint: disable=import-error,wrong-import-position
 
 
 def get_all_combinations(dict_of_lists, verbose=False):
@@ -21,10 +19,10 @@ def get_all_combinations(dict_of_lists, verbose=False):
 
 def build_table(variable_dict, output_file_path):
     """ Save all combinations to a CSV file """
-    common.save_to_csv(
-        header=variable_dict.keys(),
+    file_utils.save_to_csv(
         values=get_all_combinations(variable_dict, verbose=True),
-        output_file_path=output_file_path)
+        output_file_path=output_file_path,
+        header=variable_dict.keys())
 
 
 def build_files(template_path, var_table_path, output_file_path):
@@ -40,7 +38,7 @@ def make(folder_path, variable_dict):
     """ Wrapper """
     print(f'### {folder_path} ###')
     folder_path = Path(folder_path)
-    common.delete_files(
+    file_utils.delete_files(
         folder_path=folder_path,
         extensions=['.dat','.csv'])
     build_table(
@@ -50,7 +48,7 @@ def make(folder_path, variable_dict):
         template_path=folder_path/'template.cmm',
         var_table_path=folder_path/'var_table.csv',
         output_file_path=folder_path/'sens.dat')
-    common.zip_files(
+    file_utils.zip_files(
         folder_path=folder_path,
         extensions=['.dat'],
         file_name='dat_files',

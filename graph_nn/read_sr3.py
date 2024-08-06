@@ -6,11 +6,11 @@ from pathlib import Path
 import random
 import numpy as np
 import pandas as pd  # pylint: disable=import-error
-import common
 from tqdm import tqdm
 
 sys.path.insert(0, './python')
 from simpython.cmg import sr3reader  # type: ignore # pylint: disable=import-error,wrong-import-position
+from simpython.common import file_utils  # type: ignore # pylint: disable=import-error,wrong-import-position
 
 
 def columns():
@@ -197,7 +197,7 @@ def build_data_file(folder_path, n_files, ni, nj, nk, output_file_name, wells, v
         ni=ni,
         nj=nj)
 
-    files = common.list_files(folder_path)
+    files = file_utils.list_files(folder_path)
     random.seed(42)
     random.shuffle(files)
 
