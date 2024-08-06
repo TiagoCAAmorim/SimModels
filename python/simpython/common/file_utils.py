@@ -38,7 +38,7 @@ def list_files(folder_path, with_extensions=True):
         return []
 
 
-def delete_files(folder_path, extensions=None):
+def delete_files(folder_path, extensions=None, return_list=False):
     """ Delete all files in a folder.
 
     Parameters
@@ -48,16 +48,22 @@ def delete_files(folder_path, extensions=None):
     extensions : list of str, optional
         Limits deletion to files with extensions listed.
         (default: delete all files)
+    return_list : boolean, optional
+        Return list with of files deleted.
 
     Raises
     ------
     FileNotFoundError
         If an invalid folder path is provided.
     """
+    files = []
     for f in list_files(folder_path):
         file = folder_path/f
         if (extensions is None) or (file.suffix in extensions):
             file.unlink()
+            files.append(file)
+    if return_list:
+        return files
 
 
 def save_to_csv(values, output_file_path, header=None):
@@ -80,7 +86,7 @@ def save_to_csv(values, output_file_path, header=None):
     """
     Path(output_file_path).parent.mkdir(parents=True, exist_ok=True)
     df = pd.DataFrame(values, columns=header)
-    df.to_csv(output_file_path, index=True)
+    df.to_csv(output_file_path, index=True, index_label='index')
 
 
 def zip_files(folder_path, file_list=None, extensions=None, file_name='archive',
@@ -90,7 +96,7 @@ def zip_files(folder_path, file_list=None, extensions=None, file_name='archive',
     Parameters
     ----------
     folder_path : str
-        Path to the folder.
+        Path to the output folder.
     file_list : list of str, optional
         List of files names to be added to zip file.
         (default: all files found in folder)
