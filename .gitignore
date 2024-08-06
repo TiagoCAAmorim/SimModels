@@ -163,4 +163,10 @@ cython_debug/
 *.sr3
 *.log
 
-/no_sync
+no_sync/
+
+csv.zip
+group_csv.zip
+*.zip
+_*.*
+_*
