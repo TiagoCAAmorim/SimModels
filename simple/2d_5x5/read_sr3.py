@@ -227,9 +227,9 @@ def build_data_file(folder_path, n_files, ni, nj, nk, output_file_name, wells, v
 if __name__ == '__main__':
 
     options = {
-        'folder_path':'graph_nn/2d/sr3',
+        'folder_path':'./simple/2d_5x5/train/sr3',
         'n_files': 50,
-        'var_table_path':'graph_nn/2d/dat/var_table.csv',
+        'var_table_path':'./simple/2d_5x5/train/dat/var_table.csv',
         'ni': 5,
         'nj': 5,
         'nk': 1,
@@ -243,9 +243,9 @@ if __name__ == '__main__':
     build_data_file(**options)
 
     options = {
-        'folder_path':'graph_nn/2d_test/sr3',
+        'folder_path':'./simple/2d_5x5/test/sr3',
         'n_files': 10,
-        'var_table_path':'graph_nn/2d_test/dat/var_table.csv',
+        'var_table_path':'./simple/2d_5x5/test/dat/var_table.csv',
         'ni': 5,
         'nj': 5,
         'nk': 1,
