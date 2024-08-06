@@ -9,9 +9,7 @@ from simpython.common import template  # type: ignore # pylint: disable=import-e
 
 if __name__ == '__main__':
 
-    # prior = list(range(1, 101))
-
-    cmm = Path('./graph_nn/2d/dat/template.cmm')
+    cmm = Path('./simple/2d_5x5/train/dat/template.cmm')
     var_dict = {
         'prior': [1, 10, 11, 47, 99],
         'layer': range(0,92),
@@ -29,7 +27,7 @@ if __name__ == '__main__':
         verbose=True)
 
 
-    cmm = Path('./graph_nn/2d_test/dat/template.cmm')
+    cmm = Path('./simple/2d_5x5/test/dat/template.cmm')
     var_dict = {
         'prior': [27, 14],
         'layer': [0, 1, 2, 3],
