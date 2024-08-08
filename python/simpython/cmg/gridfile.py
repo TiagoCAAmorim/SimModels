@@ -33,7 +33,7 @@ class GridFile:
     -------
     def read():
         Reads the contents of the grid file.
-    write(output_file_path=None, coord_range=None):
+    write(file_path=None, coord_range=None, keyword=None, comments=None):
         Writes grid file.
     rewrite_all_grid_files(folder_path=None, new_suffix=None, verbose=False):
         Rewrites all grid files found in folder.
@@ -64,6 +64,11 @@ class GridFile:
         Sets the number of cells in each direction.
     set_encoding(encoding):
         Sets encoding used for reading and writting files.
+
+    n2ijk(n):
+        Returns (i,j,k) coordinates of the n-th cell.
+    ijk2n(i, j=None, k=None):
+        Returns cell number of the (i,j,k) cell.
     """
 
 
@@ -163,6 +168,90 @@ class GridFile:
         """Gets the keyword line."""
         return self._data['keyword']
 
+    def n2ijk(self, n):
+        """Returns (i,j,k) coordinates of the n-th cell.
+
+            Parameters
+            ----------
+            n : int
+                Cell number, from 1 to number of values.
+
+            Raises
+            ------
+            ValueError
+                If an incorrect cell number is provided.
+            ValueError
+                If shape is not defined.
+        """
+        if n < 1:
+            msg = "Cells number must be greater than or equal to 1."
+            raise ValueError(msg)
+
+        if self.shape is None:
+            msg = "Grid size is not defined."
+            raise ValueError(msg)
+        ni, nj, nk = self.shape
+
+        if n > ni*nj*nk:
+            msg = "Cells number must be smaller than or equal to number of values."
+            raise ValueError(msg)
+
+        k = int(n/(ni*nj)) + 1
+        j = int( (n/ni - (k-1)*nj)) + 1
+        i = n - (k-1)*ni*nj - (j-1)*ni + 1
+        return i, j, k
+
+    def ijk2n(self, i, j=None, k=None):
+        """Returns cell number of the (i,j,k) cell.
+
+            Parameters
+            ----------
+            i : int or list/tuple
+                i direction coordinate or list/tuple
+                with (i,j,k) coordinates.
+            j : int, optional
+                j direction coordinate. Assumes i contains
+                all coordinates if None is provided.
+                (default: None)
+            k : int, optional
+                k direction coordinate. Assumes i contains
+                all coordinates if None is provided.
+                (default: None)
+
+            Raises
+            ------
+            ValueError
+                If an incorrect coordinate is provided.
+            ValueError
+                If shape is not defined.
+        """
+        if (j is None) and (k is None):
+            if len(i) != 3:
+                msg = f"Expected 3 coordinates, found {len(i)}."
+                raise ValueError(msg)
+            i, j, k = i
+        if (j is not None) and (k is None):
+            msg = "Coordinates must be provided as a tuple/list or separate arguments."
+            raise ValueError(msg)
+        if (j is None) and (k is not None):
+            msg = "Coordinates must be provided as a tuple/list or separate arguments."
+            raise ValueError(msg)
+
+        if (i < 1) or (j < 1) or (k < 1):
+            msg = "Coordinates number must be greater than or equal to 1."
+            raise ValueError(msg)
+
+        if self.shape is None:
+            msg = "Grid size is not defined."
+            raise ValueError(msg)
+        ni, nj, nk = self.shape
+
+        if (i > ni) or (j > nj) or (k > nk):
+            msg = "Coordinates number must be smaller than or equal to grid sizes."
+            raise ValueError(msg)
+
+        return (k - 1)*ni*nj + (j - 1)*ni + i - 1
+
 
     def set_values(self, values):
         """Sets values by cell."""
@@ -246,9 +335,10 @@ class GridFile:
             msg = f"Expected 3 values, found {len(shape)}."
             raise ValueError(msg)
         n = self.get_number_values()
-        if n != shape[0]*shape[1]*shape[2]:
+        ni, nj, nk = shape
+        if n != ni*nj*nk:
             msg = "Shape values do not equal number of values: "
-            msg += f"expected {n}, found {shape[0]*shape[1]*shape[2]}."
+            msg += f"expected {n}, found {ni*nj*nk}."
             raise ValueError(msg)
         self.shape = shape
 
@@ -338,6 +428,10 @@ class GridFile:
             raise ValueError("Input file is not a grid file!")
         data['values'] = np.array(data['values'])
         self._data = data
+        if self.shape is not None:
+            ni, nj, nk = self.shape
+            if ni*nj*nk != len(data['values']):
+                self.shape = None
 
 
     @staticmethod
@@ -401,18 +495,28 @@ class GridFile:
             raise ValueError(msg) from e
 
 
-    def write(self, output_file_path=None, coord_range=None):
+    def write(self, file_path=None, coord_range=None,
+              keyword=None, comments=None):
         """Writes grid file.
 
             Parameters
             ----------
-            output_file_path: str, optional
-                Path to output file
-                (default: file_path)
+            file_path: str, optional
+                Path to output file. If None is provided the
+                objects' file_path is used.
+                (default: None)
             coord_range : tuple of 2-element tuples, optional
                 Coordinates ranges of a subgrid. Expected
                 format: ((i1, i2), (j1,j2), (k1,k2))
                 If None is provided the full grid is returned
+                (default: None)
+            keyword : str, optional
+                Keyword to be used. If None is provided the
+                original keyword is used.
+                (default: None)
+            comments : list of str, optional
+                Comments to be used. If None is provided the
+                original comments are used.
                 (default: None)
 
             Raises
@@ -420,20 +524,26 @@ class GridFile:
             ValueError
                 If an invalid path is provided.
         """
-        if output_file_path is None:
-            output_file_path = self._file_path
+        if file_path is None:
+            file_path = self._file_path
         else:
-            output_file_path = Path(output_file_path)
+            file_path = Path(file_path)
+
         if coord_range is None:
             values = self._data['values']
         else:
             values = self.get_values(coord_range=coord_range)
 
+        if keyword is None:
+            keyword = self._data['keyword']
+        if comments is None:
+            comments = self._data['comments']
+
         GridFile._write(
-            output_file_path=output_file_path,
+            output_file_path=file_path,
             values=values,
-            keyword=self._data['keyword'],
-            comments=self._data['comments'],
+            keyword=keyword,
+            comments=comments,
             encoding=self._encoding,
             max_line_size=self._max_line_size)
 
