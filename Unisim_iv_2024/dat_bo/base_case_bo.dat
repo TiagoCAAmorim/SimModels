@@ -38,12 +38,14 @@ INCLUDE '../grid/2024/PERMJ.geo'
 INCLUDE '../grid/2024/PERMK.geo'
 INCLUDE '../grid/2024/POR.geo'
 
+NOLIST
 TRANSF 'Fault 4'    1.0
 INCLUDE '../grid/Fault_4.flt'
 TRANSF 'Fault 5'    1.0
 INCLUDE '../grid/Fault_5.flt'
 TRANSF 'Fault 6'    1.0
 INCLUDE '../grid/Fault_6.flt'
+LIST
 
 INCLUDE '../grid/PINCH.geo'
 INCLUDE '../grid/null_array.geo'
@@ -56,7 +58,9 @@ PRPOR 450
 PVCUTOFF 2000
 
 
+NOLIST
 INCLUDE '../pvt/BO_0.pvt'
+LIST
 
 REFPW         1.03
 DENSITY  WATER    1000
@@ -71,9 +75,11 @@ PTYPE CON 1
 ROCKFLUID
 
 INCLUDE '../grid/2024/RTYPE.geo'
+NOLIST
 INCLUDE '../kr/KR_est_1.kr'
 INCLUDE '../kr/KR_coq_1.kr'
 INCLUDE '../kr/KR_Karsts.kr'
+LIST
 
 
 INITIAL
@@ -89,11 +95,8 @@ PB CON 388.1
 
 
 NUMERICAL
-** NORM PRESS 40
-** NORM SATUR 0.1
-** MAXCHANGE PRESS 100
-** MAXCHANGE SATUR 0.30
 AUTOTUNE ON
+
 
 RUN
 DATE 2018 9 2
