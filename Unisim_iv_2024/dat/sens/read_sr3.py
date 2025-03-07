@@ -3,19 +3,19 @@ Read all SR3 in a folder and generate CSV files
 """
 import sys
 from pathlib import Path
+import shutil
 import numpy as np
 import pandas as pd  # pylint: disable=import-error
-import shutil
-import common
 
 sys.path.insert(0, './python')
 from simpython.cmg import sr3reader  # type: ignore # pylint: disable=import-error,wrong-import-position
+from simpython.common import file_utils  # type: ignore # pylint: disable=import-error,wrong-import-position
 
 
 def make_csv(folder_path):
     """ Builds CSV files """
     days = None
-    for file in common.list_files(folder_path):
+    for file in file_utils.list_files(folder_path):
         if file[-4:] == '.sr3':
             print(f'Reading {file}...')
             sr3 = sr3reader.Sr3Reader(folder_path/file)
@@ -78,20 +78,20 @@ def make_zip(folder_path):
     """ Zips CSV files """
     file_list_group = []
     file_list = []
-    for file in common.list_files(folder_path):
+    for file in file_utils.list_files(folder_path):
         if file[-4:] == '.sr3':
             if (folder_path/f"{file[:-4]}_group.csv").is_file():
                 file_list_group.append(folder_path/f"{file[:-4]}_group.csv")
             if (folder_path/f"{file[:-4]}.csv").is_file():
                 file_list.append(folder_path/f"{file[:-4]}.csv")
     if len(file_list_group) > 0:
-        common.zip_files(
+        file_utils.zip_files(
             folder_path=folder_path,
             file_list=file_list_group,
             file_name='group_csv',
             delete_original=True)
     if len(file_list) > 0:
-        common.zip_files(
+        file_utils.zip_files(
             folder_path=folder_path,
             file_list=file_list,
             file_name='csv',
@@ -101,7 +101,7 @@ def make_zip(folder_path):
 def move_sr3(folder_path):
     """ Move all sr3 files to a subfolder """
     file_list = []
-    for file in common.list_files(folder_path):
+    for file in file_utils.list_files(folder_path):
         if file[-4:] == '.sr3':
             file_list.append(file)
     if len(file_list) > 0:
